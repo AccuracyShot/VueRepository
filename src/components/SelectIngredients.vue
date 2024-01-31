@@ -24,7 +24,8 @@
 
         <ul class="categorias">
             <li v-for="categoria in categorias" :key="categoria.nome">
-                
+                {{ categoria.nome }}
+                {{ categoria.imagem }}
             </li>
         </ul>
 
