@@ -12,9 +12,9 @@ export default {
 <template>
    <article class="categoria">
        <header class="categoria__cabecalho">
-           <img src="../assets/images/logo.svg" alt="" class="categoria__imagem">
+         <img :src="`/imagens/icones/categorias_ingredientes/${categoria.imagem}`" alt="" class="categoria__imagem">
          
-          <h2 class="paragrafo-lg categoria__nome">{{ categoria.nome }}</h2>
+         <h2 class="paragrafo-lg categoria__nome">{{ categoria.nome }}</h2>
          </header>
          
          <ul class="categoria__ingredientes">
