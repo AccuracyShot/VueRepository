@@ -9,7 +9,7 @@ export default {
      categoria: { type: Object as PropType<ICategoria>, required: true}
   },
   components: { Tag, Ingredients },
-  emits: ['adicionarIngrediente']
+  emits: ['adicionarIngrediente', 'removerIngrediente']
 }
 </script>
 
@@ -26,6 +26,7 @@ export default {
                <Ingredients 
                :ingrediente="ingrediente"
                @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+               @remover-ingrediente="$emit('removerIngrediente', $event)"
                />
           </li>
          </ul>

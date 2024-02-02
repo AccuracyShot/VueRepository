@@ -2,40 +2,31 @@
     import Tag from './Tag.vue';
 
     export default {
-        data() {
-            return {
-                ingredientes: [
-                    'Trigo',
-                    'Açúcar',
-                    'Leite',
-                    'Fermento em pó',
-                    'Manteiga',
-                    'Ovos'
-                ]
-            };
+        props: {
+            ingredientes: { type: Array as () => string[], required: true }
         },
         components: { Tag }
     }
 </script>
 
 <template>
-
-<span class="subtitulo-lg sua-lista-texto">
-    Sua lista:
-</span>
-
-<ul v-if="ingredientes.length" class="ingredientes-sua-lista">
-    <li v-for="ingrediente in ingredientes" :key="ingrediente">
-        <Tag :texto="ingrediente" ativa />
-    </li>
-</ul>
-
-<p v-else class="paragrafo lista-vazia">
-    <img src="../assets/images/icones/lista-vazia.svg" alt="Ícone de pesquisa.">
-    Não há ingredientes na sua lista.
-</p>
-
-</template>
+    <section>
+      <span class="subtitulo-lg sua-lista-texto">
+        Sua lista:
+      </span>
+  
+      <ul v-if="ingredientes.length" class="ingredientes-sua-lista">
+        <li v-for="ingrediente in ingredientes" :key="ingrediente">
+          <Tag :texto="ingrediente" ativa />
+        </li>
+      </ul>
+  
+      <p v-else class="paragrafo lista-vazia">
+        <img src="../assets/images/icones/lista-vazia.svg" alt="Ícone de pesquisa">
+        Sua lista está vazia, selecione ingredientes para iniciar.
+      </p>
+    </section>
+  </template>
 
 <style scoped>
 .sua-lista-texto {

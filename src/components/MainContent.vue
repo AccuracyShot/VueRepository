@@ -11,21 +11,24 @@ export default {
         };
     },
     methods: {
-        adicionarIngrediente(ingrediente: string) {
-            this.ingredientes.push(ingrediente);
-        }
+      adicionarIngrediente(ingrediente: string) {
+        this.ingredientes.push(ingrediente)
+      },
+      removerIngrediente(ingrediente: string) {
+        this.ingredientes = this.ingredientes.filter(iLista => ingrediente !== iLista);
+      },
     }
 }
 </script>
 
 <template>
     <main class="conteudo-principal">
-        <section>
-            <YourList :ingredientes="ingredientes" />
-        </section>
+
+        <YourList :ingredientes="ingredientes" />
 
         <SelectIngredients 
         @adicionar-ingrediente="adicionarIngrediente"
+        @remover-ingrediente="removerIngrediente"
         />
     </main>
 </template>

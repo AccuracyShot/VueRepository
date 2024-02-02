@@ -3,7 +3,7 @@
     import type ICategoria from '@/interfaces/ICategoria';
 import CategoryCard from './CategoryCard.vue';
 
-    export default {
+export default {
     data() {
         return {
             categorias: [] as ICategoria[]
@@ -12,8 +12,10 @@ import CategoryCard from './CategoryCard.vue';
     async created() {
         this.categorias = await obterCategorias();
     },
-    components: { CategoryCard }
+    components: { CategoryCard },
+    emits: ['adicionarIngrediente', 'removerIngrediente']
 }
+
 </script>
 
 <template>
@@ -29,6 +31,7 @@ import CategoryCard from './CategoryCard.vue';
               <CategoryCard
               :categoria="categoria"
               @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+              @remover-ingrediente="$emit('removerIngrediente', $event)"
               />
             </li>
         </ul>
