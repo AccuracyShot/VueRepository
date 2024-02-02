@@ -3,18 +3,30 @@ import SelectIngredients from './SelectIngredients.vue';
 import Tag from './Tag.vue';
 import YourList from './YourList.vue';
 
-    export default {
-    components: { SelectIngredients, Tag, YourList }
+export default {
+    components: { SelectIngredients, Tag, YourList },
+    data() {
+        return {
+            ingredientes: [] as string[]
+        };
+    },
+    methods: {
+        adicionarIngrediente(ingrediente: string) {
+            this.ingredientes.push(ingrediente);
+        }
+    }
 }
 </script>
 
 <template>
     <main class="conteudo-principal">
         <section>
-            <YourList />
+            <YourList :ingredientes="ingredientes" />
         </section>
 
-        <SelectIngredients />
+        <SelectIngredients 
+        @adicionar-ingrediente="adicionarIngrediente"
+        />
     </main>
 </template>
 

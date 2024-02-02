@@ -26,7 +26,10 @@ import CategoryCard from './CategoryCard.vue';
 
         <ul class="categorias">
             <li v-for="categoria in categorias" :key="categoria.nome">
-              <CategoryCard :categoria="categoria" />
+              <CategoryCard
+              :categoria="categoria"
+              @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+              />
             </li>
         </ul>
 
