@@ -1,10 +1,11 @@
 <script lang="ts">
+import Footer from './Footer.vue';
 import SelectIngredients from './SelectIngredients.vue';
 import Tag from './Tag.vue';
 import YourList from './YourList.vue';
 
 export default {
-    components: { SelectIngredients, Tag, YourList },
+    components: { SelectIngredients, Tag, YourList, Footer},
     data() {
         return {
             ingredientes: [] as string[]
@@ -31,6 +32,10 @@ export default {
         @remover-ingrediente="removerIngrediente"
         />
     </main>
+
+    <Footer />
+
+
 </template>
 
 <style scoped>
