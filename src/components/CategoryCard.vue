@@ -15,11 +15,11 @@ export default {
 
 <template>
    <article class="categoria">
-       <header class="categoria__cabecalho">
+      <header class="categoria__cabecalho">
          <img :src="`/imagens/icones/categorias_ingredientes/${categoria.imagem}`" alt="" class="categoria__imagem">
          
          <h2 class="paragrafo-lg categoria__nome">{{ categoria.nome }}</h2>
-         </header>
+      </header>
          
          <ul class="categoria__ingredientes">
            <li v-for="ingrediente in categoria.ingredientes" :key="ingrediente">
@@ -30,7 +30,7 @@ export default {
                />
           </li>
          </ul>
-      </article>
+    </article>
 </template>
 
 <style scoped>
