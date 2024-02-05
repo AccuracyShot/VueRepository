@@ -1,7 +1,8 @@
 <script lang="ts">
     import { obterCategorias } from '@/http/index';
     import type ICategoria from '@/interfaces/ICategoria';
-import CategoryCard from './CategoryCard.vue';
+    import CategoryCard from './CategoryCard.vue';
+    import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
 
 export default {
     data() {
@@ -12,8 +13,8 @@ export default {
     async created() {
         this.categorias = await obterCategorias();
     },
-    components: { CategoryCard },
-    emits: ['adicionarIngrediente', 'removerIngrediente']
+    components: { CategoryCard, ButtonSearchRecipe },
+    emits: ['adicionarIngrediente', 'removerIngrediente', 'searchRecipe']
 }
 
 </script>
@@ -39,6 +40,8 @@ export default {
         <p class="paragrafo dica">
             *Atenção: consideramos que você tem em casa sal, pimenta e água.
         </p>
+
+        <ButtonSearchRecipe @click="$emit('searchRecipe')" />
     </section>
 </template>
 

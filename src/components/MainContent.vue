@@ -1,14 +1,18 @@
 <script lang="ts">
+import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
 import Footer from './Footer.vue';
 import SelectIngredients from './SelectIngredients.vue';
+import ShowRecipes from './ShowRecipes.vue';
 import Tag from './Tag.vue';
 import YourList from './YourList.vue';
 
+type Page = 'SelectIngredients' | 'ShowRecipes'
+
 export default {
-    components: { SelectIngredients, Tag, YourList, Footer},
     data() {
         return {
-            ingredientes: [] as string[]
+            ingredientes: [] as string[],
+            conteudo: 'SelectIngredients' as Page
         };
     },
     methods: {
@@ -18,7 +22,11 @@ export default {
       removerIngrediente(ingrediente: string) {
         this.ingredientes = this.ingredientes.filter(iLista => ingrediente !== iLista);
       },
-    }
+      goToShowRecipes(page: Page) {
+        this.conteudo = page;
+      }
+    },
+    components: { SelectIngredients, Tag, YourList, Footer, ButtonSearchRecipe, ShowRecipes },
 }
 </script>
 
@@ -27,10 +35,13 @@ export default {
 
         <YourList :ingredientes="ingredientes" />
 
-        <SelectIngredients 
+        <SelectIngredients v-if="conteudo === 'SelectIngredients'"
         @adicionar-ingrediente="adicionarIngrediente"
         @remover-ingrediente="removerIngrediente"
+        @search-recipe="goToShowRecipes('ShowRecipes')"
         />
+
+        <ShowRecipes v-else-if="conteudo === 'ShowRecipes'" />
     </main>
 
     <Footer />
