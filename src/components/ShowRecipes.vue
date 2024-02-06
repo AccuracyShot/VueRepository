@@ -2,6 +2,7 @@
     import type IReceita from '@/interfaces/IReceita';
     import { obterReceitas } from '@/http/index';
     import type { PropType } from 'vue';
+    import BackButton from './BackButton.vue';
     export default {
   data() {
     return {
@@ -20,22 +21,25 @@
   mounted() {
     this.fetchData();
   },
+  components: { BackButton },
 };
 
 </script>
 
 <template>
     <h2>Receitas</h2>
-    <div class="receitas-container">
-        <div class="receitas-card" v-for="receita in receitas" :key="receita.nome">
+    <ul class="receitas-container">
+      <li v-for="receita in receitas" :key="receita.nome">
           <article class="receita">
-            <header class="receita-titulo">
-              <img :src="`/imagens/receitas/${receita.imagem}`" alt="" class="receita-imagem">
-              <h3>{{ receita.nome }}</h3>
-            </header>
+              <header class="receita-titulo">
+                  <img :src="`/imagens/receitas/${receita.imagem}`" alt="" class="receita-imagem">
+                  <h3>{{ receita.nome }}</h3>
+              </header>
           </article>
-        </div>
-    </div>
+      </li>
+    </ul>
+
+    <BackButton @voltar="$emit('voltar')" />
   </template>
   
   <style scoped>

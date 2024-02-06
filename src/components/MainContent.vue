@@ -35,13 +35,14 @@ export default {
 
         <YourList :ingredientes="ingredientes" />
 
-        <SelectIngredients v-if="conteudo === 'SelectIngredients'"
-        @adicionar-ingrediente="adicionarIngrediente"
-        @remover-ingrediente="removerIngrediente"
-        @search-recipe="goToShowRecipes('ShowRecipes')"
-        />
-
-        <ShowRecipes v-else-if="conteudo === 'ShowRecipes'" />
+        <KeepAlive>
+          <SelectIngredients v-if="conteudo === 'SelectIngredients'"
+          @adicionar-ingrediente="adicionarIngrediente"
+          @remover-ingrediente="removerIngrediente"
+          @search-recipe="goToShowRecipes('ShowRecipes')"
+          />
+          <ShowRecipes v-if="conteudo === 'ShowRecipes'" @voltar="conteudo = 'SelectIngredients'" />
+        </KeepAlive>
     </main>
 
     <Footer />
