@@ -1,57 +1,53 @@
 <script lang="ts">
-import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
-import Footer from './Footer.vue';
 import SelectIngredients from './SelectIngredients.vue';
 import ShowRecipes from './ShowRecipes.vue';
 import Tag from './Tag.vue';
 import YourList from './YourList.vue';
 
-type Page = 'SelectIngredients' | 'ShowRecipes'
+type Pagina = 'SelecionarIngredientes' | 'MostrarReceitas';
 
 export default {
-    data() {
-        return {
-            ingredientes: [] as string[],
-            conteudo: 'SelectIngredients' as Page
-        };
+  data() {
+    return {
+      ingredientes: [] as string[],
+      conteudo: 'SelecionarIngredientes' as Pagina
+    };
+  },
+  components: { SelectIngredients, Tag, YourList, ShowRecipes },
+  methods: {
+    adicionarIngrediente(ingrediente: string) {
+      this.ingredientes.push(ingrediente)
     },
-    methods: {
-      adicionarIngrediente(ingrediente: string) {
-        this.ingredientes.push(ingrediente)
-      },
-      removerIngrediente(ingrediente: string) {
-        this.ingredientes = this.ingredientes.filter(iLista => ingrediente !== iLista);
-      },
-      goToShowRecipes(page: Page) {
-        this.conteudo = page;
-      }
+    removerIngrediente(ingrediente: string) {
+      this.ingredientes = this.ingredientes.filter(iLista => ingrediente !== iLista);
     },
-    components: { SelectIngredients, Tag, YourList, Footer, ButtonSearchRecipe, ShowRecipes },
+    navegar(pagina: Pagina) {
+      this.conteudo = pagina;
+    }
+  }
 }
 </script>
 
 <template>
-    <main class="conteudo-principal">
+  <main class="conteudo-principal">
+    <YourList :ingredientes="ingredientes" />
 
-        <YourList :ingredientes="ingredientes" />
-
-        <KeepAlive>
-          <SelectIngredients v-if="conteudo === 'SelectIngredients'"
-          @adicionar-ingrediente="adicionarIngrediente"
-          @remover-ingrediente="removerIngrediente"
-          @search-recipe="goToShowRecipes('ShowRecipes')"
-          />
-          <ShowRecipes v-if="conteudo === 'ShowRecipes'" @voltar="conteudo = 'SelectIngredients'" />
-        </KeepAlive>
-    </main>
-
-    <Footer />
-
-
+    <KeepAlive include="SelecionarIngredientes">
+      <SelectIngredients v-if="conteudo === 'SelecionarIngredientes'"
+        @adicionar-ingrediente="adicionarIngrediente"
+        @remover-ingrediente="removerIngrediente"
+        @buscar-receitas="navegar('MostrarReceitas')"
+      />
+  
+      <ShowRecipes v-else-if="conteudo === 'MostrarReceitas'"
+        :ingredientes="ingredientes"
+        @editar-receitas="navegar('SelecionarIngredientes')"
+      />
+    </KeepAlive>
+  </main>
 </template>
 
 <style scoped>
-
 .conteudo-principal {
   padding: 6.5rem 7.5rem;
   border-radius: 3.75rem 3.75rem 0rem 0rem;
@@ -62,6 +58,31 @@ export default {
   flex-direction: column;
   align-items: center;
   gap: 5rem;
+}
+
+.sua-lista-texto {
+  color: var(--coral, #F0633C);
+  display: block;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.ingredientes-sua-lista {
+  display: flex;
+  justify-content: center;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lista-vazia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+
+  color: var(--coral, #F0633C);
+  text-align: center;
 }
 
 @media only screen and (max-width: 1300px) {
@@ -77,5 +98,4 @@ export default {
     gap: 4rem;
   }
 }
-
 </style>

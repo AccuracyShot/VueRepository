@@ -1,89 +1,115 @@
 <script lang="ts">
-    import type IReceita from '@/interfaces/IReceita';
-    import { obterReceitas } from '@/http/index';
-    import type { PropType } from 'vue';
-    import BackButton from './BackButton.vue';
-    export default {
+import { obterReceitas } from '@/http';
+import { itensDeLista1EstaoEmLista2 } from '@/operacoes/listas';
+import type IReceita from '@/interfaces/IReceita';
+import type { PropType } from 'vue';
+import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
+import RecipesCard from './RecipesCard.vue';
+
+export default {
+  props: {
+    ingredientes: { type: Array as PropType<string[]>, required: true }
+  },
   data() {
     return {
-      receitas: [] as IReceita[],
+      receitasEncontradas: [] as IReceita[]
     };
   },
-  methods: {
-    async fetchData() {
-      try {
-        this.receitas = await obterReceitas('categoria');
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  },
-  mounted() {
-    this.fetchData();
-  },
-  components: { BackButton },
-};
+  async created() {
+    const receitas = await obterReceitas();
 
+    this.receitasEncontradas = receitas.filter((receita) => {
+      // Lógica que verifica se posso fazer receita:
+      // Todos os ingredientes de uma receita devem estar inclusos na minha lista de ingredientes
+      // Se sim, devemos retornar `true`
+
+      const possoFazerReceita = itensDeLista1EstaoEmLista2(receita.ingredientes, this.ingredientes);
+
+      return possoFazerReceita;
+    })
+  },
+  components: { ButtonSearchRecipe, RecipesCard },
+  emits: ['editarReceitas']
+}
 </script>
 
 <template>
-    <h2>Receitas</h2>
-    <ul class="receitas-container">
-      <li v-for="receita in receitas" :key="receita.nome">
-          <article class="receita">
-              <header class="receita-titulo">
-                  <img :src="`/imagens/receitas/${receita.imagem}`" alt="" class="receita-imagem">
-                  <h3>{{ receita.nome }}</h3>
-              </header>
-          </article>
-      </li>
-    </ul>
+  <section class="mostrar-receitas">
+    <h1 class="cabecalho titulo-receitas">Receitas</h1>
 
-    <BackButton @voltar="$emit('voltar')" />
-  </template>
-  
-  <style scoped>
+    <p class="paragrafo-lg resultados-encontrados">
+      Resultados encontrados: {{ receitasEncontradas.length }}
+    </p>
 
-.receitas-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-}
+    <div v-if="receitasEncontradas.length" class="receitas-wrapper">
+      <p class="paragrafo-lg informacoes">
+        Veja as opções de receitas que encontramos com os ingredientes que você tem por aí!
+      </p>
 
-.receitas-card {
-  flex: 1 0 20%; 
-  max-width: 20%;
-}
+      <ul class="receitas">
+        <li v-for="receita of receitasEncontradas" :key="receita.nome">
+          <RecipesCard :receita="receita" />
+        </li>
+      </ul>
+    </div>
 
-.receita {
-  width: 80%;
-  padding: 1rem;
-  border-radius: 1rem;
-  background: var(--branco, #FFF);
-  box-shadow: 4px 4px 10px 0px rgba(68, 68, 68, 0.05);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center; 
-  justify-content: center; 
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
+    <div v-else class="receitas-nao-encontradas">
+      <p class="paragrafo-lg receitas-nao-encontradas__info">
+        Ops, não encontramos resultados para sua combinação. Vamos tentar de novo?
+      </p>
 
-.receita-titulo {
+      <img src="../assets/imagens/sem-receitas.png"
+        alt="Desenho de um ovo quebrado. A gema tem um rosto com uma expressão triste.">
+    </div>
+
+    <ButtonSearchRecipe texto="Editar lista" @click="$emit('editarReceitas')" />
+  </section>
+</template>
+
+<style scoped>
+.mostrar-receitas {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
-  gap: 0.5rem;
+  text-align: center;
 }
 
-.receita-imagem {
-  width: 15rem; 
-  max-width: 100%; 
-  max-height: 100%; 
+.titulo-receitas {
+  color: var(--verde-medio, #3D6D4A);
+  margin-bottom: 1.5rem;
 }
 
+.resultados-encontrados {
+  color: var(--verde-medio, #3D6D4A);
+  margin-bottom: 0.5rem;
+}
+
+.receitas-wrapper {
+  margin-bottom: 3.5rem;
+}
+
+.informacoes {
+  margin-bottom: 2rem;
+}
+
+.receitas {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.receitas-nao-encontradas {
+  margin-bottom: 2rem;
+}
+
+.receitas-nao-encontradas__info {
+  margin-bottom: 0.5rem;
+}
+
+@media only screen and (max-width: 767px) {
+  .receitas-wrapper {
+    margin-bottom: 2rem;
+  }
+}
 </style>

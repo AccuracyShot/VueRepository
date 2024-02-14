@@ -6,7 +6,7 @@ import Ingredients from './Ingredients.vue';
 
 export default {
   props: {
-     categoria: { type: Object as PropType<ICategoria>, required: true}
+    categoria: { type: Object as PropType<ICategoria>, required: true }
   },
   components: { Tag, Ingredients },
   emits: ['adicionarIngrediente', 'removerIngrediente']
@@ -14,23 +14,23 @@ export default {
 </script>
 
 <template>
-   <article class="categoria">
-      <header class="categoria__cabecalho">
-         <img :src="`/imagens/icones/categorias_ingredientes/${categoria.imagem}`" alt="" class="categoria__imagem">
-         
-         <h2 class="paragrafo-lg categoria__nome">{{ categoria.nome }}</h2>
-      </header>
-         
-         <ul class="categoria__ingredientes">
-           <li v-for="ingrediente in categoria.ingredientes" :key="ingrediente">
-               <Ingredients 
-               :ingrediente="ingrediente"
-               @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
-               @remover-ingrediente="$emit('removerIngrediente', $event)"
-               />
-          </li>
-         </ul>
-    </article>
+  <article class="categoria">
+    <header class="categoria__cabecalho">
+      <img :src="`/imagens/icones/categorias_ingredientes/${categoria.imagem}`" alt="" class="categoria__imagem">
+
+      <h2 class="paragrafo-lg categoria__nome">{{ categoria.nome }}</h2>
+    </header>
+
+    <ul class="categoria__ingredientes">
+      <li v-for="ingrediente in categoria.ingredientes" :key="ingrediente">
+        <Ingredients
+          :ingrediente="ingrediente"
+          @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+          @remover-ingrediente="$emit('removerIngrediente', $event)"
+        />
+      </li>
+    </ul>
+  </article>
 </template>
 
 <style scoped>
@@ -71,5 +71,4 @@ export default {
   gap: 0.5rem;
   flex-wrap: wrap;
 }
-
 </style>
