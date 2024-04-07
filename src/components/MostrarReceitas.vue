@@ -1,10 +1,10 @@
 <script lang="ts">
-import { obterReceitas } from '@/http';
 import { itensDeLista1EstaoEmLista2 } from '@/operacoes/listas';
-import type IReceita from '@/interfaces/IReceita';
 import type { PropType } from 'vue';
-import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
-import RecipesCard from './RecipesCard.vue';
+import { obterReceitas } from '@/http';
+import type IReceita from '@/interfaces/IReceita';
+import BotaoPrincipal from './BotaoPrincipal.vue';
+import CardReceita from './CardReceita.vue';
 
 export default {
   props: {
@@ -28,7 +28,7 @@ export default {
       return possoFazerReceita;
     })
   },
-  components: { ButtonSearchRecipe, RecipesCard },
+  components: { BotaoPrincipal, CardReceita },
   emits: ['editarReceitas']
 }
 </script>
@@ -48,7 +48,7 @@ export default {
 
       <ul class="receitas">
         <li v-for="receita of receitasEncontradas" :key="receita.nome">
-          <RecipesCard :receita="receita" />
+          <CardReceita :receita="receita" />
         </li>
       </ul>
     </div>
@@ -62,7 +62,7 @@ export default {
         alt="Desenho de um ovo quebrado. A gema tem um rosto com uma expressão triste.">
     </div>
 
-    <ButtonSearchRecipe texto="Editar lista" @click="$emit('editarReceitas')" />
+    <BotaoPrincipal texto="Editar lista" @click="$emit('editarReceitas')" />
   </section>
 </template>
 

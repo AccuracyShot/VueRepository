@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { obterCategorias } from '@/http/index';
-    import type ICategoria from '@/interfaces/ICategoria';
-    import CategoryCard from './CategoryCard.vue';
-    import ButtonSearchRecipe from './ButtonSearchRecipe.vue';
+import { obterCategorias } from '@/http/index';
+import type ICategoria from '@/interfaces/ICategoria';
+import CardCategoria from './CardCategoria.vue';
+import BotaoPrincipal from './BotaoPrincipal.vue';
 
-    export default {
+export default {
   name: 'SelecionarIngredientes',
   data() {
     return {
@@ -14,7 +14,7 @@
   async created() {
     this.categorias = await obterCategorias();
   },
-  components: { CategoryCard, ButtonSearchRecipe },
+  components: { CardCategoria, BotaoPrincipal },
   emits: ['adicionarIngrediente', 'removerIngrediente', 'buscarReceitas']
 }
 </script>
@@ -29,7 +29,7 @@
 
     <ul class="categorias">
       <li v-for="categoria in categorias" :key="categoria.nome">
-        <CategoryCard
+        <CardCategoria
           :categoria="categoria"
           @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
           @remover-ingrediente="$emit('removerIngrediente', $event)"
@@ -41,7 +41,7 @@
       *Atenção: consideramos que você tem em casa sal, pimenta e água.
     </p>
 
-    <ButtonSearchRecipe texto="Buscar receitas!" @click="$emit('buscarReceitas')" />
+    <BotaoPrincipal texto="Buscar receitas!" @click="$emit('buscarReceitas')" />
   </section>
 </template>
 
